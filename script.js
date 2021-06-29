@@ -16,22 +16,25 @@ let currentActiveCard = 0;
 
 // Store DOM cards
 const cardsEl = [];
-// ================= Create cards & Flip Effect =================
+
 // Store card data
-const cardsData = [
-  {
-    question: 'Qual o maior estado do Brasil?',
-    answer: 'Amazonas'
-  },
-  {
-    question: 'Quantos países tem no mundo?',
-    answer: '193 países'
-  },
-  {
-    question: 'Quem descobriu o Brasil?quem',
-    answer: 'Pedro Álvares Cabral'
-  }
-]
+const cardsData = getCardsData();
+
+// ================= Create cards & Flip Effect =================
+// const cardsData = [
+//   {
+//     question: 'Qual o maior estado do Brasil?',
+//     answer: 'Amazonas'
+//   },
+//   {
+//     question: 'Quantos países tem no mundo?',
+//     answer: '193 países'
+//   },
+//   {
+//     question: 'Quem descobriu o Brasil?quem',
+//     answer: 'Pedro Álvares Cabral'
+//   }
+// ]
 
 // Create all cards
 function createCards() {
@@ -76,8 +79,22 @@ function updateCurrentText() {
 
 createCards()
 
+// Get cards from local storage 
+function getCardsData() {
+  const cards = JSON.parse(localStorage.getItem('cards'))
+  return cards === null ? [] : cards
+}
+
+// Add card to local storage
+function setCardsData(cards) {
+  localStorage.setItem('cards', JSON.stringify(cards))
+
+  window.location.reload()
+}
+
 // Event listerners
 
+// Next Btn
 nextBtn.addEventListener('click', () => {
   cardsEl[currentActiveCard].className = 'card left'
 
@@ -92,6 +109,7 @@ nextBtn.addEventListener('click', () => {
   updateCurrentText()
 });
 
+// Prev Btn
 prevBtn.addEventListener('click', () => {
   cardsEl[currentActiveCard].className = 'card right';
 
@@ -105,3 +123,38 @@ prevBtn.addEventListener('click', () => {
 
   updateCurrentText()
 });
+
+//  Show add container
+showBtn.addEventListener('click', () => addContainer.classList.add('show'))
+
+//  hide add container
+hideBtn.addEventListener('click', () => addContainer.classList.remove('show'))
+
+// add new card
+addCardBtn.addEventListener('click', () => {
+  const question = questionEl.value;
+  const answer = answerEl.value;
+
+  if(question.trim() && answer.trim()) {
+    const newCard = { question, answer }
+
+    createCard(newCard)
+
+    questionEl.value = '';
+    answerEl.value = '';
+
+    addContainer.classList.remove('show')
+
+    cardsData.push(newCard)
+
+    setCardsData(cardsData)
+  }
+})
+
+// Clear cards btn
+
+clearBtn.addEventListener('click', () => {
+  localStorage.clear()
+  cardsContainer.innerHTML = ''
+  window.location.reload();
+})
