@@ -45,7 +45,7 @@ Demonstração <a href="https://nonatodiego.github.io/flash-cards/"> Flash cards
 
 ## Licença :scroll:
 
-> Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+> FREE
 
 ---
 
